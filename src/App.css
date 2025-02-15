@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap');
+
+:root {
+    --color-primary: #4A90E2;
+}
+
+#root {
+    max-width: 1280px;
+    border-radius: 10px;
+    margin: 70px;
+    height: calc(100vh - 140px);
+    border: 5px solid var(--color-primary);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 30px;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 4px 4px 0 0;
+}
+
+header h2 {
+    font-size: 30px;
+    font-family: "Orbitron", sans-serif;
+}
+
+.nav-link-container {
+    display: flex;
+    list-style: none;
+    width: 300px;
+    align-items: center;
+    justify-content: end;
+}
+
+.nav-link-container > li > a {
+    margin-left: 40px;
+    text-decoration: none;
+    color: white;
+}
+
+.main-container {
+    height: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main-container > .output-chat-container {
+    flex-grow: 1;
+}
+
+.main-container > .chat-bottom-container > form {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 50px;
+}
+
+.main-container > .chat-bottom-container input {
+    width: 100%;
+    margin: 0;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--color-primary);
+    outline: none;
+    padding: 0 20px;
+}
+
+.chat-bottom-container button {
+    margin-left: 19px;
+    height: 40px;
+    width: 60px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    background: var(--color-primary);
+    cursor: pointer;
+}
