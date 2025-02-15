@@ -17,6 +17,9 @@
         margin: 0;
         height: 100vh;
     }
+    .chatbubble {
+        width: 90%;
+    }
 }
 
 header {
