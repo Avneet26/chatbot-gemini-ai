@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import callAPI from "../apiLogic.js";
 import ChatBubble from "./ChatBubble.jsx";
 
@@ -8,8 +8,17 @@ export default function MainContainer() {
     const [input, setInput] = React.useState('');
     const [chatHistory, setChatHistory] = React.useState([]);
 
+    const chatContainerRef = useRef(null);
+
+    // Function to scroll to the bottom
+    const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    };
+
     React.useEffect(() => {
-        console.log('chat updated')
+        scrollToBottom();
         // main('just type hello world with 25 random emojis!');
     }, [chatHistory])
 
@@ -39,7 +48,7 @@ export default function MainContainer() {
 
     return (
         <div className="main-container">
-            <div className="output-chat-container">
+            <div className="output-chat-container" ref={chatContainerRef}>
                 {
                     chatHistory.map((item, index) => (
                         <ChatBubble chatObj={item} key={index} />

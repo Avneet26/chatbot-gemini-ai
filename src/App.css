@@ -51,6 +51,11 @@ header h2 {
 
 .main-container > .output-chat-container {
     flex-grow: 1;
+    overflow-x: auto;
+    margin: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
 }
 
 .main-container > .chat-bottom-container > form {
@@ -80,4 +85,57 @@ header h2 {
     color: white;
     background: var(--color-primary);
     cursor: pointer;
+}
+
+.chatbubble {
+    width: 50%;
+    padding: 13px;
+    margin-bottom: 20px;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    animation: popchat 0.5s forwards;
+}
+
+.chatbubble.userbubble {
+    background: var(--color-primary);
+    color: white;
+    align-self: flex-end;
+}
+
+pre {
+    white-space: pre-wrap; /* Preserve whitespace but allow wrapping */
+    word-wrap: break-word; /* Break long words */
+    max-width: 100%; /* Ensure it respects the container's width */
+    overflow-wrap: anywhere; /* Break long words anywhere if needed */
+}
+
+@keyframes popchat{
+    0%{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scrollbar styling */
+.output-chat-container::-webkit-scrollbar {
+    width: 8px; /* Width of vertical scrollbar */
+    height: 8px; /* Height of horizontal scrollbar (if present) */
+}
+
+.output-chat-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 4px; /* Round track edges */
+}
+
+.output-chat-container::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar thumb color */
+    border-radius: 4px; /* Round scrollbar edges */
+}
+
+.output-chat-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker on hover */
 }

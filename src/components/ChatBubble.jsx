@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export default function ChatBubble({chatObj}) {
     return (
         <div className={`chatbubble ${chatObj.from === 'user' ? 'userbubble' : 'systembubble'}`} >
-            <p>{chatObj.from}: {chatObj.message}</p>
+            <pre>{chatObj.message}</pre>
         </div>
     )
 }
