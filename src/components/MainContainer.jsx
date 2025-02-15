@@ -7,6 +7,7 @@ export default function MainContainer() {
     const [output, setOutput] = React.useState('');
     const [input, setInput] = React.useState('');
     const [chatHistory, setChatHistory] = React.useState([]);
+    const [isGenerating, setIsGenerating] = React.useState(false);
 
     const chatContainerRef = useRef(null);
 
@@ -28,22 +29,26 @@ export default function MainContainer() {
 
     const handleButtonClick = async(e) => {
         e.preventDefault();
-        const inputObj = {
-            from: 'user',
-            message: input,
-        };
-        setChatHistory((prevChatHistory) => [...prevChatHistory, inputObj]);
-        setInput('');
+        if (input !== "") {
+            setIsGenerating(true);
+            const inputObj = {
+                from: 'user',
+                message: input,
+            };
+            setChatHistory((prevChatHistory) => [...prevChatHistory, inputObj]);
+            setInput('');
 
-        const feedbackArray = JSON.stringify(chatHistory);
-        const apiResponse = await callAPI(input, feedbackArray);
+            const feedbackArray = JSON.stringify(chatHistory);
+            const apiResponse = await callAPI(input, feedbackArray);
 
-        const respObj = {
-            from: 'system',
-            message: apiResponse,
-        };
-        setChatHistory((prevChatHistory) => [...prevChatHistory, respObj]);
-        setOutput(apiResponse);
+            const respObj = {
+                from: 'system',
+                message: apiResponse,
+            };
+            setChatHistory((prevChatHistory) => [...prevChatHistory, respObj]);
+            setOutput(apiResponse);
+            setIsGenerating(false);
+        }
     }
 
     return (
@@ -58,7 +63,7 @@ export default function MainContainer() {
             <div className="chat-bottom-container">
                 <form onSubmit={handleButtonClick}>
                     <input type="text" name="inputField" id="inputField" autoComplete="off" value={input} onChange={handleInputChange} />
-                    <button type="submit">Ask</button>
+                    <button type="submit" disabled={isGenerating}>{!isGenerating ? "Ask" : <span className="loader"></span>}</button>
                 </form>
             </div>
         </div>
