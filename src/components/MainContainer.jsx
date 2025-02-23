@@ -1,13 +1,16 @@
 import React, {useRef} from "react";
-import callAPI from "../apiLogic.js";
+import {callAPI, filterMemories} from "../apiLogic.js";
 import ChatBubble from "./ChatBubble.jsx";
+import MemoryStoredPopup from "./MemoryStoredPopup.jsx";
+import {addDataWithUserId, getDataByUserId} from "../scripts/firebaseFunctions.js";
 
-export default function MainContainer() {
+export default function MainContainer({curruser}) {
 
     const [output, setOutput] = React.useState('');
     const [input, setInput] = React.useState('');
     const [chatHistory, setChatHistory] = React.useState([]);
     const [isGenerating, setIsGenerating] = React.useState(false);
+    const [isPopupShown, setIsPopupShown] = React.useState(false);
 
     const chatContainerRef = useRef(null);
 
@@ -27,6 +30,12 @@ export default function MainContainer() {
         setInput(e.target.value)
     }
 
+    const removePopup = () => {
+        setTimeout(() => {
+            setIsPopupShown(false);
+        }, 3000)
+    }
+
     const handleButtonClick = async(e) => {
         e.preventDefault();
         if (input !== "") {
@@ -38,8 +47,23 @@ export default function MainContainer() {
             setChatHistory((prevChatHistory) => [...prevChatHistory, inputObj]);
             setInput('');
 
+            let storedMemories;
+
+            if(Object.keys(curruser).length !== 0) {
+                storedMemories = await getDataByUserId(curruser.uid, "memories");
+                console.log(storedMemories);
+                const memoryresponse = await filterMemories(input);
+                if(!memoryresponse.includes("nothing to store")) {
+                    await addDataWithUserId("memories", {content: memoryresponse});
+                    setIsPopupShown(true);
+                    removePopup();
+                    console.log("data stored");
+                }
+            }
+
+            console.log(curruser);
             const feedbackArray = JSON.stringify(chatHistory);
-            const apiResponse = await callAPI(input, feedbackArray);
+            const apiResponse = await callAPI(input, feedbackArray, JSON.stringify(storedMemories));
 
             const respObj = {
                 from: 'system',
@@ -53,6 +77,7 @@ export default function MainContainer() {
 
     return (
         <div className="main-container">
+            {(isPopupShown && <MemoryStoredPopup />)}
             <div className="output-chat-container" ref={chatContainerRef}>
                 {
                     chatHistory.map((item, index) => (
