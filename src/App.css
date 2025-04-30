@@ -262,6 +262,10 @@ pre {
     background: white;
 }
 
+.no-animation {
+    animation: none !important;
+}
+
 .memory-popup > i {
     color: lightseagreen;
     margin-right: 10px;

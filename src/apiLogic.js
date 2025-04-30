@@ -7,7 +7,6 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
-
 // deepseek/deepseek-chat:free
 async function callAPI(message, feedbackArray, memories) {
     const completion = await openai.chat.completions.create({
@@ -18,7 +17,9 @@ async function callAPI(message, feedbackArray, memories) {
                 content: "you are a helper chatbot, so dont do any kind of text formatting and be casual in response " +
                     "and ask follow up questions and just give back the response of my chat" +
                     "Here is the chat history in joined array format" + feedbackArray + "" +
-                    "also here are some personal details of the user, use them to make chat more relevant to user: " + memories,
+                    "also here are some personal details of the user, use them to make chat more relevant to user," +
+                    " only use them if mentioned or important" +
+                    "use name if stored in memories to address the user: " + memories,
             },
             {
                 role: 'user',

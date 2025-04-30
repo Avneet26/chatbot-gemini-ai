@@ -3,6 +3,7 @@ import {callAPI, filterMemories} from "../apiLogic.js";
 import ChatBubble from "./ChatBubble.jsx";
 import MemoryStoredPopup from "./MemoryStoredPopup.jsx";
 import {addDataWithUserId, getDataByUserId} from "../scripts/firebaseFunctions.js";
+import MemoryNotStoringPopup from "./MemoryNotStoringPopup.jsx";
 
 export default function MainContainer({curruser}) {
 
@@ -11,6 +12,7 @@ export default function MainContainer({curruser}) {
     const [chatHistory, setChatHistory] = React.useState([]);
     const [isGenerating, setIsGenerating] = React.useState(false);
     const [isPopupShown, setIsPopupShown] = React.useState(false);
+    const isUserLoggedIn = (Object.keys(curruser).length !== 0);
 
     const chatContainerRef = useRef(null);
 
@@ -49,7 +51,7 @@ export default function MainContainer({curruser}) {
 
             let storedMemories;
 
-            if(Object.keys(curruser).length !== 0) {
+            if(isUserLoggedIn) {
                 storedMemories = await getDataByUserId(curruser.uid, "memories");
                 console.log(storedMemories);
                 const memoryresponse = await filterMemories(input);
@@ -77,6 +79,7 @@ export default function MainContainer({curruser}) {
 
     return (
         <div className="main-container">
+            {(!isUserLoggedIn) && <MemoryNotStoringPopup />}
             {(isPopupShown && <MemoryStoredPopup />)}
             <div className="output-chat-container" ref={chatContainerRef}>
                 {
